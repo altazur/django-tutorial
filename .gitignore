@@ -1,0 +1,3 @@
+*.pyc
+tutorial/polls/__pycache__
+tutorial/tutorial/__pycache__
