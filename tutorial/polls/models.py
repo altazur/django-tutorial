@@ -14,7 +14,7 @@ class Question(models.Model):
 		return self.question_text
 	def was_added_recently(self):
 		"""Function return true if the pub_date isn't more than 1 day"""
-		return self.pub_date >= timezone.now()-datetime.timedelta(days=1) 
+		return timezone.now() - datetime.timedelta(days=1) <= self.pub_date <= timezone.now()
 
 class Choice(models.Model):
 	question = models.ForeignKey(Question, on_delete=models.CASCADE)
