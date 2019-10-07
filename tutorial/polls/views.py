@@ -6,6 +6,7 @@ from django.template import loader
 from django.urls import reverse
 from django.db.models import F
 from django.views import generic
+from django.utils import timezone
 
 # Create your views here.
 #Old view without generic
@@ -22,7 +23,8 @@ class IndexView(generic.ListView):
     
     def get_queryset(self):
         """Return the last five questions"""
-        return Question.objects.order_by('-pub_date')[:5]
+        #.exlude added to prevent Question without choice to be shown
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date').exclude(choice=None)[:5]
 
 #Old view
 """def detail(request, question_id):
@@ -36,6 +38,10 @@ class IndexView(generic.ListView):
 class DetailView(generic.DetailView):
     model = Question
     template_name = 'polls/detail.html'
+    def get_queryset(self):
+        """No future question are available through detail page"""
+        #.exlude added to prevent Question without choice to be shown
+        return Question.objects.filter(pub_date__lte=timezone.now()).exclude(choice=None)
 
 
 #Old view
@@ -45,6 +51,10 @@ class DetailView(generic.DetailView):
 class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/result.html'
+    def get_queryset(self):
+        """Future questions constraint"""
+        #.exlude added to prevent Question without choice to be shown
+        return Question.objects.filter(pub_date__lte=timezone.now()).exclude(choice=None)
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
