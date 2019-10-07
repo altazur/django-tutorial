@@ -13,6 +13,8 @@ def create_question(question_text, days, choice=1):
     Negative days means that question is in the past from now
     and positive days is that the question is in the future.
     0 means now
+    If the choice is not 0 (default) than the created question will have a on test choice
+    In other way the question won't have any choice and therefore won't be displayed on any pages
     """
     time = timezone.now() + datetime.timedelta(days=days)
     question = Question.objects.create(question_text=question_text, pub_date=time)
