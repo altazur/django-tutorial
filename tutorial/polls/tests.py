@@ -72,6 +72,7 @@ class QuestionIndevViewTests(TestCase):
         response = self.client.get(reverse('polls:index'))
         self.assertTrue(response.status_code, 200)
         self.assertQuerysetEqual(response.context['latest_question_list'], ['<Question: Past>'])
+
 class QuestionDetailViewTests(TestCase):
     def test_past_question(self):
         """Past question is visible by its url"""
@@ -86,6 +87,7 @@ class QuestionDetailViewTests(TestCase):
         url = reverse('polls:detail', args=(question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
 class QuestionResultsViewTests(TestCase):
     def test_past_question(self):
         """Future question result page isn't available by url"""
@@ -100,6 +102,7 @@ class QuestionResultsViewTests(TestCase):
         url = reverse('polls:results', args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
+
 class QuestionWithoutChoiceTests(TestCase):
     def test_question_without_choice(self):
         """Question without choice isn't displayed on the index page and can't be accessed by url on result and details pages"""
@@ -129,7 +132,6 @@ class QuestionWithoutChoiceTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
 class QustionModelTests(TestCase):
-    
     def test_was_added_recently_with_future_question(self):
         """
         was_added_recently() returns False if the qustion.pub_date is in the future
